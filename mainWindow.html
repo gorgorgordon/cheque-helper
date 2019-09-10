@@ -1,0 +1,145 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <!--
+    <link href="https://fonts.googleapis.com/css?family=Montserrat|Noto+Sans+TC" rel="stylesheet">
+    -->
+    <style>
+        body {
+            background-color: #f0f0ff;
+            color: #444499;
+            font-family: 'Noto Sans TC', sans-serif;
+        }
+        div.title{
+            text-align:center;
+            background-color:#444499;
+            color:#f0f0ff;
+            padding-top:0.7em;
+            padding-bottom:0.7em;
+        }
+        div.footer {
+            position: fixed;
+            bottom: 0;
+            right: 0;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.6em;
+        }
+        div.content {
+            text-align:center;
+            margin-top:50px;
+        }
+        div.content > p:nth-child(2){
+            text-transform:uppercase;
+        }
+    </style>
+</head>
+<body>
+    <div class="title">
+        CHEQUE AMOUNT CONVERTOR
+    </div>
+    <div class="content">
+        <p>Cheque amount: <input type="number" oninput="convert(this.value)" id="num"/></p>
+        <p id="result">Please input the cheque amount.</p>
+        <p id="log"></p>
+        <p id="decimal"></p>
+    </div>
+    <div class="footer">
+        Coded by Gordon Chan on Apr 12th, 2019.
+    </div>
+    <script>
+
+        function $id(id) {
+            return document.getElementById(id);
+        }
+
+        function convert(num) {
+
+            var single_digits = ["", "one", "two", "three", "four", "five", "six", "seven","eight", "nine"];
+
+            var two_digits = [ "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen", "seventeen", "eighteen", "nineteen"];
+
+            var tens_multiple = ["", "", "twenty", "thirty", "forty", "fifty", "sixty", "seventy", "eighty", "ninety" ];
+
+            var tens_power = [ "hundred", "thousand", "million" ]; 
+
+            if (num.includes(".")) {
+                var dotAt = num.indexOf(".");
+                var integralPart = num.substring(0, dotAt);
+                if( num.substring(dotAt + 1) ){
+                    $id("num").value = integralPart + "." + num.substring(dotAt + 1, dotAt + 3);
+                }
+                var decimalPart = num.substring(dotAt + 1, dotAt + 3);
+                
+                $id("result").innerText = parseIntegralPart(integralPart) + parseDecimalPart(decimalPart) + " only";
+            } else {
+                $id("result").innerText = parseIntegralPart(num) + " only";
+            } // close if-else
+
+            if( num == ""){
+                $id("result").innerText = "Please input the cheque amount.";
+            }
+
+            
+
+            function parseIntegralPart(str) {
+
+                var word;
+
+                if (str.length <= 2) {
+                    word = parseTwoDigits(str);
+                    return word;
+                } else if (str.length == 3) {
+                    word = parseThreeDigits(str);
+                    return word;
+                } else if (str.length <= 6) {
+                    word = parseIntegralPart(str.substring(0, str.length - 3));
+                    return parseIntegralPart(str.substring(0, str.length - 3)) + " thousand " + parseIntegralPart(str.substring(str.length - 3, str.length));
+                } else if (str.length <= 9) {
+                    word = parseIntegralPart(str.substring(0, str.length - 6));
+                    return parseIntegralPart(str.substring(0, str.length - 6)) + " million " + parseIntegralPart(str.substring(str.length - 6, str.length));
+                } else {
+                    return "Sorry, Exceed Limit."
+                }
+                
+            }
+
+            function parseDecimalPart(str) {
+
+                return " and cents " + parseTwoDigits(str);
+            }
+
+            function parseTwoDigits(str) {
+                var word;
+
+                if (str.length == 1) {
+                    word = single_digits[parseInt(str)];
+                }else {
+
+                    var num = parseInt(str);
+
+                    if (num <10) {
+                        word = single_digits[num];
+                    } else if (num<20) {
+                        word = two_digits[num - 10];
+                    } else {
+                        var hyphen = str.charAt(1) == 0 ? "" : "-";
+                        word = tens_multiple[str.charAt(0)] + hyphen + single_digits[str.charAt(1)];
+                    }
+
+                } // close if-else
+
+                return word;
+
+            } // close parseTwoDigits()
+
+            function parseThreeDigits(str) {
+                var hundreds = single_digits[str.charAt(0)];
+
+                return hundreds + ( hundreds ? " hundred and " : " " ) + parseTwoDigits(str.substring(1, 3));
+            }
+
+        } // close convert()
+    </script>
+</body>
+</html>
