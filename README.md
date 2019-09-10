@@ -11,10 +11,17 @@ https://www.sololearn.com/Profile/10887361
 REFERENCE:
 
 I learned about setup and building of Electron app from this Traversy Media Tutorial:-
+
 https://www.youtube.com/watch?v=kN1Czs0m1SU
 
 The Electron Packager is by Christian Engvall:-
+
 https://www.christianengvall.se/electron-packager-tutorial/
+
+Cheque Icon by GraphicLoads from iconarchive:
+
+http://www.iconarchive.com/show/flat-finance-icons-by-graphicloads/cheque-icon.html
+
 
 
 FEATURE:
