@@ -11,7 +11,7 @@
   "author": "Gordon Chan",
   "license": "MIT",
   "devDependencies": {
-    "electron": "^4.1.4",
+    "electron": "^9.1.0",
     "electron-packager": "^13.1.1"
   }
 }
